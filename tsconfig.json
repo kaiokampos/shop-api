@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* ── COMPILAÇÃO ── */
+
+    // Para qual versão do JavaScript o TypeScript vai compilar
+    // ES2022 é moderno e suportado pelo Node.js 18+
+    "target": "ES2022",
+
+    // Sistema de módulos — commonjs usa require() e module.exports
+    // É o padrão do Node.js e o mais simples para começar
+    "module": "commonjs",
+
+    // Como o TypeScript resolve os caminhos de import
+    // "node" segue as mesmas regras do Node.js
+    "moduleResolution": "node",
+
+    /* ── PASTAS ── */
+
+    // Onde estão os arquivos TypeScript (.ts)
+    "rootDir": "./src",
+
+    // Onde o TypeScript vai colocar os arquivos JavaScript compilados
+    "outDir": "./dist",
+
+    /* ── QUALIDADE ── */
+
+    // Ativa todas as verificações rigorosas de tipo
+    // Essencial — sem isso o TypeScript perde muito valor
+    "strict": true,
+
+    // Permite importar módulos CommonJS como se fossem ES Modules
+    // Necessário para importar pacotes como o Express corretamente
+    "esModuleInterop": true,
+
+    // Ignora erros de tipo dentro da pasta node_modules
+    // Os pacotes externos nem sempre têm tipos perfeitos
+    "skipLibCheck": true,
+
+    // Garante consistência em nomes de arquivos
+    // Evita bugs em sistemas Linux (case-sensitive)
+    "forceConsistentCasingInFileNames": true,
+
+    // Permite importar arquivos .json diretamente no TypeScript
+    "resolveJsonModule": true
+  },
+
+  // Quais arquivos o TypeScript deve compilar
+  // "src/**/*.ts" significa: todos os .ts dentro de src/ e subpastas
+  "include": ["src/**/*.ts"],
+
+  // Quais pastas ignorar — node_modules e o próprio output
+  "exclude": ["node_modules", "dist"]
+}

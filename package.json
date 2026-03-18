@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/kaiokampos/shop-api/issues"
   },
-  "homepage": "https://github.com/kaiokampos/shop-api#readme"
+  "homepage": "https://github.com/kaiokampos/shop-api#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
 }
