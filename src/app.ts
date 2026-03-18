@@ -7,6 +7,9 @@ import helmet from 'helmet'
 // Importa o cors — permite requisições de outros domínios (ex: frontend)
 import cors from 'cors'
 
+// Importa o router de produtos
+import productsRouter from './features/products/products.routes'
+
 // Cria a instância do Express
 // "app" é o objeto central — nele registramos middlewares e rotas
 const app: Application = express()
@@ -25,6 +28,10 @@ app.use(cors())
 app.use(express.json())
 
 // ── ROTAS ──
+
+// Registra as rotas de produtos sob o prefixo /products
+// Todas as rotas do productsRouter ficam acessíveis em /products/*
+app.use('/products', productsRouter)
 
 // Rota de health check — usada para verificar se a API está no ar
 // GET /health retorna um JSON simples confirmando que está rodando
