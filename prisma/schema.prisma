@@ -14,6 +14,7 @@ model User {
   password  String
   role      Role     @default(customer)
   cart      Cart?
+  orders    Order[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,6 +26,7 @@ model Product {
   price       Decimal
   stock       Int      @default(0)
   cartItems   CartItem[]
+  orderItems  OrderItem[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -75,4 +77,60 @@ model CartItem {
   // Garante que o mesmo produto não apareça duas vezes no mesmo carrinho
   // Se o usuário adicionar o mesmo produto, incrementamos a quantidade
   @@unique([cartId, productId])
+}
+
+  model Order {
+  // Chave primária
+  id        String      @id @default(uuid())
+
+  // Usuário que fez o pedido
+  userId    String
+
+  // Status do pedido — começa como "pending"
+  status    OrderStatus @default(pending)
+
+  // Valor total do pedido — calculado na hora de criar
+  total     Decimal
+
+  // Lista de itens do pedido
+  items     OrderItem[]
+
+  // Relacionamento com o usuário
+  user      User        @relation(fields: [userId], references: [id])
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+  // Chave primária
+  id        String   @id @default(uuid())
+
+  // Pedido ao qual pertence
+  orderId   String
+
+  // Produto comprado
+  productId String
+
+  // Quantidade comprada
+  quantity  Int
+
+  // Preço no momento da compra — importante!
+  // O preço do produto pode mudar depois, mas o pedido deve manter o preço original
+  price     Decimal
+
+  // Relacionamentos
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+// Status possíveis de um pedido
+enum OrderStatus {
+  pending    // Aguardando pagamento
+  paid       // Pago
+  shipped    // Enviado
+  delivered  // Entregue
+  cancelled  // Cancelado
 }

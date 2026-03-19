@@ -4,6 +4,7 @@ import cors from 'cors'
 import productsRouter from './features/products/products.routes'
 import authRouter from './features/auth/auth.routes'
 import cartRouter from './features/cart/cart.routes'
+import ordersRouter from './features/orders/orders.routes'
 
 // Importa o router de autenticação
 
@@ -22,6 +23,9 @@ app.use('/auth', authRouter)
 app.use('/products', productsRouter)
 // Rotas do carrinho — /cart/*
 app.use('/cart', cartRouter)
+
+// Rotas de pedidos — /orders/*
+app.use('/orders', ordersRouter)
 
 app.get('/health', (req: Request, res: Response) => {
   res.json({
