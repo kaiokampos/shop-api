@@ -1,30 +1,18 @@
-// Importa o Router do Express
-// Router é um mini-app que agrupa rotas relacionadas
 import { Router } from 'express'
-
-// Importa todos os controllers de produtos
 import * as ProductController from './products.controller'
+import { authenticate, authorize } from '../../middleware/auth.middleware'
 
-// Cria o router de produtos
 const router = Router()
 
-// Define as rotas e conecta aos controllers
-// O Express vai chamar o controller correto dependendo do método e caminho
-
-// GET /products
+// Rotas públicas — qualquer um pode ver produtos
 router.get('/', ProductController.getAllProducts)
-
-// GET /products/:id
 router.get('/:id', ProductController.getProductById)
 
-// POST /products
-router.post('/', ProductController.createProduct)
+// Rotas protegidas — apenas admins podem criar, atualizar e deletar
+// O "authenticate" verifica o JWT
+// O "authorize('admin')" verifica se o usuário é admin
+router.post('/', authenticate, authorize('admin'), ProductController.createProduct)
+router.put('/:id', authenticate, authorize('admin'), ProductController.updateProduct)
+router.delete('/:id', authenticate, authorize('admin'), ProductController.deleteProduct)
 
-// PUT /products/:id
-router.put('/:id', ProductController.updateProduct)
-
-// DELETE /products/:id
-router.delete('/:id', ProductController.deleteProduct)
-
-// Exporta o router para ser registrado no app.ts
 export default router
