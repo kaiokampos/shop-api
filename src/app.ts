@@ -2,9 +2,10 @@ import express, { Application, Request, Response } from 'express'
 import helmet from 'helmet'
 import cors from 'cors'
 import productsRouter from './features/products/products.routes'
+import authRouter from './features/auth/auth.routes'
+import cartRouter from './features/cart/cart.routes'
 
 // Importa o router de autenticação
-import authRouter from './features/auth/auth.routes'
 
 const app: Application = express()
 
@@ -19,6 +20,8 @@ app.use('/auth', authRouter)
 
 // Rotas de produtos — /products/*
 app.use('/products', productsRouter)
+// Rotas do carrinho — /cart/*
+app.use('/cart', cartRouter)
 
 app.get('/health', (req: Request, res: Response) => {
   res.json({

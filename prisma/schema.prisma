@@ -13,6 +13,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(customer)
+  cart      Cart?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -23,6 +24,7 @@ model Product {
   description String?
   price       Decimal
   stock       Int      @default(0)
+  cartItems   CartItem[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -30,4 +32,47 @@ model Product {
 enum Role {
   customer
   admin
+}
+
+model Cart {
+  // Chave primária
+  id        String     @id @default(uuid())
+
+  // Chave estrangeira — referencia o usuário dono do carrinho
+  // @unique garante que cada usuário tem no máximo um carrinho
+  userId    String     @unique
+
+  // Relacionamento — o Prisma usa isso para fazer joins automáticos
+  user      User       @relation(fields: [userId], references: [id])
+
+  // Lista de itens do carrinho — um carrinho tem vários CartItems
+  items     CartItem[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  // Chave primária
+  id        String   @id @default(uuid())
+
+  // Chave estrangeira para o carrinho
+  cartId    String
+
+  // Chave estrangeira para o produto
+  productId String
+
+  // Quantidade desse produto no carrinho
+  quantity  Int      @default(1)
+
+  // Relacionamentos
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Garante que o mesmo produto não apareça duas vezes no mesmo carrinho
+  // Se o usuário adicionar o mesmo produto, incrementamos a quantidade
+  @@unique([cartId, productId])
 }
