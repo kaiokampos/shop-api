@@ -11,7 +11,13 @@ const PORT = Number(process.env.PORT) || 3000
 
 // Liga o servidor na porta definida
 // O callback roda uma vez quando o servidor estiver pronto
-app.listen(PORT, () => {
+// app.listen(PORT, () => {
+//   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`)
+//   console.log(`📋 Ambiente: ${process.env.NODE_ENV}`)
+// })
+
+// '0.0.0.0' permite conexões externas — obrigatório no Railway
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`)
   console.log(`📋 Ambiente: ${process.env.NODE_ENV}`)
 })
